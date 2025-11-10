@@ -1,0 +1,207 @@
+{
+  "summary": {
+    "total_tests": 7,
+    "passed_tests": 2,
+    "failed_tests": 5,
+    "success_rate": 28.57142857142857,
+    "created_components": [],
+    "created_configs": []
+  },
+  "detailed_results": [
+    {
+      "test_name": "Admin Login",
+      "success": true,
+      "details": "Successfully logged in as admin@company.com",
+      "response_data": null,
+      "timestamp": "2025-10-22T05:46:26.513905"
+    },
+    {
+      "test_name": "Create Basic Salary Component",
+      "success": false,
+      "details": "Failed to create component. Status: 400",
+      "response_data": {
+        "detail": "A earnings component with this name already exists"
+      },
+      "timestamp": "2025-10-22T05:46:26.556878"
+    },
+    {
+      "test_name": "Create EPF Configuration",
+      "success": false,
+      "details": "Failed to create EPF config. Status: 200",
+      "response_data": {
+        "message": "Tax configuration updated successfully"
+      },
+      "timestamp": "2025-10-22T05:46:26.593996"
+    },
+    {
+      "test_name": "Data Persistence - Components",
+      "success": false,
+      "details": "Failed to retrieve components. Status: 200",
+      "response_data": {
+        "components": [
+          {
+            "component_id": "4c6d573b-42db-4de3-a0c0-2f324e09bced",
+            "company_id": "c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6",
+            "category": "invalid_category",
+            "component_type": "",
+            "component_name": "Test Component",
+            "name_in_payslip": "Test",
+            "is_variable": false,
+            "calculation_type": null,
+            "amount_value": 0.0,
+            "is_active": true,
+            "part_of_salary_structure": true,
+            "is_taxable": false,
+            "calculate_on_pro_rata": false,
+            "is_scheduled_earning": false,
+            "tax_deduction_preference": null,
+            "include_in_fbp": false,
+            "consider_for_epf": false,
+            "epf_contribution_rule": null,
+            "pf_wage_threshold": 15000.0,
+            "consider_for_esi": false,
+            "show_in_payslip": true,
+            "deduction_frequency": null,
+            "benefit_plan": null,
+            "benefit_association": null,
+            "include_employer_contribution": false,
+            "is_superannuation_fund": false,
+            "unclaimed_handling": null,
+            "amount_per_month": 0.0,
+            "created_at": "2025-10-22T05:45:15.706490+00:00",
+            "updated_at": "2025-10-22T05:45:15.706493+00:00",
+            "created_by": "admin"
+          },
+          {
+            "component_id": "5fc39c85-17cf-428e-abdb-97d4f7c5e3d9",
+            "company_id": "c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6",
+            "category": "earnings",
+            "component_type": "Test",
+            "component_name": "Test Component",
+            "name_in_payslip": "Test Component",
+            "is_variable": false,
+            "calculation_type": "flat_amount",
+            "amount_value": 1000.0,
+            "is_active": true,
+            "part_of_salary_structure": true,
+            "is_taxable": false,
+            "calculate_on_pro_rata": false,
+            "is_scheduled_earning": false,
+            "tax_deduction_preference": null,
+            "include_in_fbp": false,
+            "consider_for_epf": false,
+            "epf_contribution_rule": null,
+            "pf_wage_threshold": 15000.0,
+            "consider_for_esi": false,
+            "show_in_payslip": true,
+            "deduction_frequency": null,
+            "benefit_plan": null,
+            "benefit_association": null,
+            "include_employer_contribution": false,
+            "is_superannuation_fund": false,
+            "unclaimed_handling": null,
+            "amount_per_month": 0.0,
+            "created_at": "2025-10-22T05:45:15.543590+00:00",
+            "updated_at": "2025-10-22T05:45:15.543592+00:00",
+            "created_by": "admin"
+          },
+          {
+            "component_id": "6333514c-8811-4645-8680-4f6887cd4fc5",
+            "company_id": "c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6",
+            "category": "earnings",
+            "component_type": "Basic",
+            "component_name": "Basic Salary",
+            "name_in_payslip": "Basic",
+            "is_variable": false,
+            "calculation_type": "flat_amount",
+            "amount_value": 30000.0,
+            "is_active": true,
+            "part_of_salary_structure": true,
+            "is_taxable": false,
+            "calculate_on_pro_rata": false,
+            "is_scheduled_earning": false,
+            "tax_deduction_preference": null,
+            "include_in_fbp": false,
+            "consider_for_epf": true,
+            "epf_contribution_rule": null,
+            "pf_wage_threshold": 15000.0,
+            "consider_for_esi": true,
+            "show_in_payslip": true,
+            "deduction_frequency": null,
+            "benefit_plan": null,
+            "benefit_association": null,
+            "include_employer_contribution": false,
+            "is_superannuation_fund": false,
+            "unclaimed_handling": null,
+            "amount_per_month": 0.0,
+            "created_at": "2025-10-22T05:45:15.288658+00:00",
+            "updated_at": "2025-10-22T05:45:15.288661+00:00",
+            "created_by": "admin"
+          }
+        ],
+        "total": 3
+      },
+      "timestamp": "2025-10-22T05:46:26.632354"
+    },
+    {
+      "test_name": "Data Persistence - Tax Configs",
+      "success": false,
+      "details": "Failed to retrieve tax configs. Status: 200",
+      "response_data": {
+        "configurations": [
+          {
+            "config_id": "3adbf9d3-8064-4482-93ea-17665c1bb099",
+            "company_id": "c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6",
+            "component_type": "epf",
+            "is_enabled": true,
+            "epf_number": "A/MUM/12345678/000",
+            "epf_deduction_cycle": "monthly",
+            "epf_employee_contribution_rate": 12.0,
+            "epf_employer_contribution_rate": 12.0,
+            "epf_include_employer_contribution": true,
+            "epf_include_edli": false,
+            "epf_include_admin_charges": false,
+            "epf_override_at_employee_level": false,
+            "epf_pro_rate_restricted_wage": false,
+            "epf_consider_components_after_lop": true,
+            "esi_number": null,
+            "esi_deduction_cycle": "monthly",
+            "esi_employee_contribution_rate": 0.75,
+            "esi_employer_contribution_rate": 3.25,
+            "esi_include_employer_contribution": false,
+            "esi_wage_ceiling": 21000.0,
+            "tds_enabled": false,
+            "pt_enabled": false,
+            "pt_state": null,
+            "lwf_enabled": false,
+            "lwf_state": null,
+            "bonus_enabled": false,
+            "bonus_min_percentage": 8.33,
+            "bonus_max_percentage": 20.0,
+            "created_at": "2025-10-22T05:45:15.399339+00:00",
+            "updated_at": "2025-10-22T05:46:26.590055+00:00",
+            "created_by": "admin"
+          }
+        ]
+      },
+      "timestamp": "2025-10-22T05:46:26.712223"
+    },
+    {
+      "test_name": "Validation - Missing Fields",
+      "success": true,
+      "details": "Correctly rejected component with missing fields",
+      "response_data": null,
+      "timestamp": "2025-10-22T05:46:26.754473"
+    },
+    {
+      "test_name": "Validation - Invalid Tax Config",
+      "success": false,
+      "details": "Should have returned 422 for invalid config. Got 200",
+      "response_data": {
+        "message": "Tax configuration created successfully",
+        "config_id": "91fad7e7-17e2-43da-90c3-911899982154"
+      },
+      "timestamp": "2025-10-22T05:46:26.800100"
+    }
+  ]
+}

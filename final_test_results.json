@@ -1,0 +1,131 @@
+{
+  "summary": {
+    "total_tests": 19,
+    "passed_tests": 19,
+    "failed_tests": 0,
+    "success_rate": 100.0,
+    "created_components": [
+      "b9a4570a-8c1e-47f1-8c9b-7dc58ec0af72",
+      "f24b5f8f-9aaf-4f4d-962f-769aee81acec",
+      "43fc05fe-0e0f-46b3-bb44-6a98ca1425dc",
+      "c2a2059d-56fb-46ad-ad06-27d1774d8597"
+    ],
+    "timestamp": "2025-10-22T05:48:10.822594"
+  },
+  "detailed_results": [
+    {
+      "test_name": "Admin Login",
+      "success": true,
+      "details": "Successfully authenticated as admin@company.com",
+      "timestamp": "2025-10-22T05:48:10.092655"
+    },
+    {
+      "test_name": "Create Basic Salary Component",
+      "success": true,
+      "details": "Created Basic Salary component (ID: b9a4570a-8c1e-47f1-8c9b-7dc58ec0af72)",
+      "timestamp": "2025-10-22T05:48:10.136153"
+    },
+    {
+      "test_name": "Verify Component in Earnings List",
+      "success": true,
+      "details": "Found component in earnings list (4 total earnings)",
+      "timestamp": "2025-10-22T05:48:10.182472"
+    },
+    {
+      "test_name": "Update Component Amount",
+      "success": true,
+      "details": "Successfully updated amount to 35000",
+      "timestamp": "2025-10-22T05:48:10.226280"
+    },
+    {
+      "test_name": "Verify Update",
+      "success": true,
+      "details": "Amount successfully updated to 35000",
+      "timestamp": "2025-10-22T05:48:10.267131"
+    },
+    {
+      "test_name": "Create Deductions Component",
+      "success": true,
+      "details": "Created Deductions component successfully",
+      "timestamp": "2025-10-22T05:48:10.307228"
+    },
+    {
+      "test_name": "Create Benefits Component",
+      "success": true,
+      "details": "Created Benefits component successfully",
+      "timestamp": "2025-10-22T05:48:10.345344"
+    },
+    {
+      "test_name": "Create Reimbursements Component",
+      "success": true,
+      "details": "Created Reimbursements component successfully",
+      "timestamp": "2025-10-22T05:48:10.387948"
+    },
+    {
+      "test_name": "Create EPF Configuration",
+      "success": true,
+      "details": "EPF configuration created/updated successfully",
+      "timestamp": "2025-10-22T05:48:10.427056"
+    },
+    {
+      "test_name": "Verify EPF Configuration",
+      "success": true,
+      "details": "EPF configuration verified successfully",
+      "timestamp": "2025-10-22T05:48:10.464533"
+    },
+    {
+      "test_name": "Update EPF Employee Rate",
+      "success": true,
+      "details": "EPF employee rate updated to 10%",
+      "timestamp": "2025-10-22T05:48:10.506543"
+    },
+    {
+      "test_name": "Verify EPF Update",
+      "success": true,
+      "details": "EPF employee rate successfully updated to 10%",
+      "timestamp": "2025-10-22T05:48:10.541952"
+    },
+    {
+      "test_name": "Create ESI Configuration",
+      "success": true,
+      "details": "ESI configuration created successfully",
+      "timestamp": "2025-10-22T05:48:10.581065"
+    },
+    {
+      "test_name": "Disable EPF Configuration",
+      "success": true,
+      "details": "EPF configuration disabled successfully",
+      "timestamp": "2025-10-22T05:48:10.659647"
+    },
+    {
+      "test_name": "Verify EPF Disabled",
+      "success": true,
+      "details": "EPF configuration correctly disabled",
+      "timestamp": "2025-10-22T05:48:10.703208"
+    },
+    {
+      "test_name": "Data Persistence - Components",
+      "success": true,
+      "details": "Retrieved 9 salary components from MongoDB",
+      "timestamp": "2025-10-22T05:48:10.742590"
+    },
+    {
+      "test_name": "Multi-Tenancy - Company Isolation",
+      "success": true,
+      "details": "All components belong to same company (company_id filtering working)",
+      "timestamp": "2025-10-22T05:48:10.742623"
+    },
+    {
+      "test_name": "Data Persistence - Tax Configs",
+      "success": true,
+      "details": "Retrieved 3 tax configurations from MongoDB",
+      "timestamp": "2025-10-22T05:48:10.781548"
+    },
+    {
+      "test_name": "Validation - Missing Required Fields",
+      "success": true,
+      "details": "Correctly rejected component with missing required fields",
+      "timestamp": "2025-10-22T05:48:10.822365"
+    }
+  ]
+}

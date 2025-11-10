@@ -1,0 +1,554 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useAuth } from '@/contexts/AuthContext';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Calendar,
+  Clock,
+  Play,
+  Square,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  MapPin,
+  Timer
+} from 'lucide-react';
+import { toast } from 'sonner';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isToday, isSameDay } from 'date-fns';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+const EmployeeAttendance = () => {
+  const { user } = useAuth();
+  const [currentStatus, setCurrentStatus] = useState('checked-out'); // 'checked-in', 'checked-out', 'break'
+  const [todayRecord, setTodayRecord] = useState({
+    check_in_time: null,
+    check_out_time: null,
+    break_start: null,
+    break_end: null,
+    total_hours: '0h 0m',
+    status: 'absent'
+  });
+  const [attendanceData, setAttendanceData] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState(new Date());
+  const [monthlyStats, setMonthlyStats] = useState({
+    present_days: 0,
+    absent_days: 0,
+    late_days: 0,
+    total_hours: '0h 0m',
+    average_hours: '0h 0m'
+  });
+  const [workingDaysConfig, setWorkingDaysConfig] = useState({
+    saturday_policy: "alternate",
+    off_saturdays: [1, 3],
+    sunday_off: true
+  });
+  const [holidays, setHolidays] = useState([]);
+
+  useEffect(() => {
+    fetchWorkingDaysConfig();
+    fetchHolidays();
+  }, []);
+
+  useEffect(() => {
+    fetchAttendanceData();
+    fetchTodayRecord();
+  }, [selectedMonth, workingDaysConfig, holidays]);
+
+  const fetchWorkingDaysConfig = async () => {
+    try {
+      const response = await axios.get(`${API}/settings`);
+      if (response.data.working_days_config) {
+        setWorkingDaysConfig(response.data.working_days_config);
+      }
+    } catch (error) {
+      console.error("Error fetching working days config:", error);
+    }
+  };
+
+  const fetchHolidays = async () => {
+    try {
+      const response = await axios.get(`${API}/holidays`);
+      setHolidays(response.data);
+    } catch (error) {
+      console.error("Error fetching holidays:", error);
+    }
+  };
+
+  const fetchTodayRecord = () => {
+    // Mock today's record
+    const mockRecord = {
+      check_in_time: '09:15 AM',
+      check_out_time: null,
+      break_start: null,
+      break_end: null,
+      total_hours: '8h 45m',
+      status: 'present'
+    };
+    setTodayRecord(mockRecord);
+    setCurrentStatus(mockRecord.check_out_time ? 'checked-out' : 'checked-in');
+  };
+
+  // Check if a date is a holiday
+  const isHoliday = (date) => {
+    const dateStr = format(date, 'yyyy-MM-dd');
+    return holidays.some(holiday => holiday.date === dateStr);
+  };
+
+  // Check if a Saturday is working day based on dynamic config
+  const isWorkingSaturday = (date) => {
+    if (date.getDay() !== 6) return false; // Not a Saturday
+    
+    // If Saturday policy is "all_working", all Saturdays are working days
+    if (workingDaysConfig.saturday_policy === "all_working") {
+      return true;
+    }
+    
+    // If Saturday policy is "all_off", no Saturdays are working days
+    if (workingDaysConfig.saturday_policy === "all_off") {
+      return false;
+    }
+    
+    // For "alternate" or "custom" policies, check the specific Saturday number
+    const dayOfMonth = date.getDate();
+    const firstSaturday = new Date(date.getFullYear(), date.getMonth(), 1);
+    while (firstSaturday.getDay() !== 6) {
+      firstSaturday.setDate(firstSaturday.getDate() + 1);
+    }
+    
+    const saturdayNumber = Math.ceil((dayOfMonth - firstSaturday.getDate() + 1) / 7);
+    
+    // If this Saturday number is in the off_saturdays list, it's NOT a working day
+    return !workingDaysConfig.off_saturdays.includes(saturdayNumber);
+  };
+
+  const fetchAttendanceData = () => {
+    // Mock attendance data for the month
+    const start = startOfMonth(selectedMonth);
+    const end = endOfMonth(selectedMonth);
+    const days = eachDayOfInterval({ start, end });
+    
+    const mockData = days.map((day, index) => {
+      // Generate mock attendance based on patterns
+      const isSunday = day.getDay() === 0;
+      const isSaturday = day.getDay() === 6;
+      const isFutureDate = day > new Date();
+      const isDayHoliday = isHoliday(day);
+      
+      // Check if Sunday is a working day based on config
+      const isSundayOff = workingDaysConfig.sunday_off;
+      
+      // Determine if it's a working day
+      const isWorkingDay = !isFutureDate && !isDayHoliday && 
+                          (isSunday ? !isSundayOff : (!isSaturday || isWorkingSaturday(day)));
+      
+      // Non-working days (holidays, Sundays based on config, off Saturdays) or future dates
+      if (!isWorkingDay || isFutureDate) {
+        return {
+          date: day,
+          status: 'weekend',
+          check_in_time: null,
+          check_out_time: null,
+          total_hours: '0h 0m'
+        };
+      }
+
+      const statuses = ['present', 'present', 'present', 'present', 'late', 'absent'];
+      const randomStatus = statuses[index % statuses.length];
+      
+      return {
+        date: day,
+        status: randomStatus,
+        check_in_time: randomStatus === 'absent' ? null : randomStatus === 'late' ? '09:45 AM' : '09:00 AM',
+        check_out_time: randomStatus === 'absent' ? null : '06:00 PM',
+        total_hours: randomStatus === 'absent' ? '0h 0m' : '9h 0m',
+        break_duration: randomStatus === 'absent' ? '0h 0m' : '1h 0m'
+      };
+    });
+
+    setAttendanceData(mockData);
+    
+    // Calculate monthly stats
+    const presentDays = mockData.filter(d => d.status === 'present').length;
+    const lateDays = mockData.filter(d => d.status === 'late').length;
+    const absentDays = mockData.filter(d => d.status === 'absent').length;
+    
+    setMonthlyStats({
+      present_days: presentDays,
+      late_days: lateDays,
+      absent_days: absentDays,
+      total_hours: `${(presentDays + lateDays) * 9}h 0m`,
+      average_hours: presentDays + lateDays > 0 ? '9h 0m' : '0h 0m'
+    });
+  };
+
+  const handleCheckIn = () => {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: true 
+    });
+    
+    setTodayRecord(prev => ({
+      ...prev,
+      check_in_time: timeString,
+      status: 'present'
+    }));
+    setCurrentStatus('checked-in');
+    toast.success('Checked in successfully!');
+  };
+
+  const handleCheckOut = () => {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: true 
+    });
+    
+    setTodayRecord(prev => ({
+      ...prev,
+      check_out_time: timeString
+    }));
+    setCurrentStatus('checked-out');
+    toast.success('Checked out successfully!');
+  };
+
+  const handleBreakStart = () => {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: true 
+    });
+    
+    setTodayRecord(prev => ({
+      ...prev,
+      break_start: timeString
+    }));
+    setCurrentStatus('break');
+    toast.success('Break started');
+  };
+
+  const handleBreakEnd = () => {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: true 
+    });
+    
+    setTodayRecord(prev => ({
+      ...prev,
+      break_end: timeString
+    }));
+    setCurrentStatus('checked-in');
+    toast.success('Break ended');
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'present':
+        return <CheckCircle className="h-4 w-4 text-green-600" />;
+      case 'absent':
+        return <XCircle className="h-4 w-4 text-red-600" />;
+      case 'late':
+        return <AlertTriangle className="h-4 w-4 text-yellow-600" />;
+      case 'weekend':
+        return <Calendar className="h-4 w-4 text-gray-400" />;
+      default:
+        return <Clock className="h-4 w-4 text-gray-600" />;
+    }
+  };
+
+  const getStatusColor = (status) => {
+    const colors = {
+      present: 'bg-green-100 text-green-800',
+      absent: 'bg-red-100 text-red-800',
+      late: 'bg-yellow-100 text-yellow-800',
+      weekend: 'bg-gray-100 text-gray-800'
+    };
+    return colors[status] || 'bg-gray-100 text-gray-800';
+  };
+
+  const getCurrentTime = () => {
+    return new Date().toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true 
+    });
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Attendance Tracking</h1>
+          <p className="text-gray-500">Track your daily attendance and working hours</p>
+        </div>
+        <div className="text-right">
+          <p className="text-sm text-gray-500">Current Time</p>
+          <p className="text-lg font-semibold">{getCurrentTime()}</p>
+        </div>
+      </div>
+
+      {/* Today's Attendance Card */}
+      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Clock className="h-5 w-5 text-blue-600" />
+              <span className="text-blue-700">Today's Attendance</span>
+            </div>
+            <Badge variant={currentStatus === 'checked-in' ? 'default' : 'secondary'}>
+              {currentStatus === 'checked-in' ? 'Active' : 
+               currentStatus === 'break' ? 'On Break' : 'Checked Out'}
+            </Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Time Records */}
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white p-3 rounded-lg border">
+                  <p className="text-sm text-gray-500">Check In</p>
+                  <p className="font-semibold text-green-600">
+                    {todayRecord.check_in_time || '--:--'}
+                  </p>
+                </div>
+                <div className="bg-white p-3 rounded-lg border">
+                  <p className="text-sm text-gray-500">Check Out</p>
+                  <p className="font-semibold text-red-600">
+                    {todayRecord.check_out_time || '--:--'}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white p-3 rounded-lg border">
+                  <p className="text-sm text-gray-500">Break Start</p>
+                  <p className="font-semibold text-orange-600">
+                    {todayRecord.break_start || '--:--'}
+                  </p>
+                </div>
+                <div className="bg-white p-3 rounded-lg border">
+                  <p className="text-sm text-gray-500">Break End</p>
+                  <p className="font-semibold text-orange-600">
+                    {todayRecord.break_end || '--:--'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-white p-3 rounded-lg border">
+                <p className="text-sm text-gray-500">Total Working Hours</p>
+                <p className="text-lg font-bold text-blue-600">{todayRecord.total_hours}</p>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-4">
+              <div className="bg-white p-4 rounded-lg border">
+                <div className="flex items-center space-x-2 mb-3">
+                  <MapPin className="h-4 w-4 text-gray-500" />
+                  <span className="text-sm text-gray-500">Location: Office - Mumbai</span>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3">
+                  <Button 
+                    onClick={handleCheckIn}
+                    disabled={currentStatus === 'checked-in' || currentStatus === 'break'}
+                    className="w-full"
+                    variant={currentStatus === 'checked-out' ? 'default' : 'outline'}
+                  >
+                    <Play className="w-4 h-4 mr-2" />
+                    Check In
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleCheckOut}
+                    disabled={currentStatus === 'checked-out'}
+                    variant={currentStatus === 'checked-in' || currentStatus === 'break' ? 'destructive' : 'outline'}
+                    className="w-full"
+                  >
+                    <Square className="w-4 h-4 mr-2" />
+                    Check Out
+                  </Button>
+
+                  <Button 
+                    onClick={currentStatus === 'break' ? handleBreakEnd : handleBreakStart}
+                    disabled={currentStatus === 'checked-out'}
+                    variant={currentStatus === 'break' ? 'default' : 'outline'}
+                    className="col-span-2"
+                  >
+                    <Timer className="w-4 h-4 mr-2" />
+                    {currentStatus === 'break' ? 'End Break' : 'Start Break'}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Monthly Stats */}
+      <div className="grid md:grid-cols-4 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Present Days</p>
+                <p className="text-2xl font-bold text-green-600">{monthlyStats.present_days}</p>
+              </div>
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <CheckCircle className="h-6 w-6 text-green-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Late Days</p>
+                <p className="text-2xl font-bold text-yellow-600">{monthlyStats.late_days}</p>
+              </div>
+              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                <AlertTriangle className="h-6 w-6 text-yellow-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Absent Days</p>
+                <p className="text-2xl font-bold text-red-600">{monthlyStats.absent_days}</p>
+              </div>
+              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                <XCircle className="h-6 w-6 text-red-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Total Hours</p>
+                <p className="text-2xl font-bold text-blue-600">{monthlyStats.total_hours}</p>
+              </div>
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <Clock className="h-6 w-6 text-blue-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Monthly Calendar */}
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-center">
+            <CardTitle>Monthly Attendance</CardTitle>
+            <Select value={format(selectedMonth, 'yyyy-MM')} onValueChange={(value) => setSelectedMonth(new Date(value))}>
+              <SelectTrigger className="w-48">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2025-10">October 2025</SelectItem>
+                <SelectItem value="2025-09">September 2025</SelectItem>
+                <SelectItem value="2025-08">August 2025</SelectItem>
+                <SelectItem value="2025-07">July 2025</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-7 gap-2 mb-4">
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+              <div key={day} className="p-2 text-center font-semibold text-gray-500 text-sm">
+                {day}
+              </div>
+            ))}
+          </div>
+          
+          <div className="grid grid-cols-7 gap-2">
+            {(() => {
+              const firstDay = attendanceData.length > 0 ? attendanceData[0].date.getDay() : 0;
+              const paddingCells = [];
+              
+              // Add empty cells for days before the first day of the month
+              for (let i = 0; i < firstDay; i++) {
+                paddingCells.push(
+                  <div key={`padding-${i}`} className="p-3"></div>
+                );
+              }
+              
+              // Add the actual attendance data
+              const attendanceCells = attendanceData.map((record, index) => (
+                <div
+                  key={index}
+                  className={`
+                    p-3 text-center border rounded-lg cursor-pointer hover:shadow-md transition-shadow
+                    ${isToday(record.date) ? 'ring-2 ring-blue-500' : ''}
+                    ${getStatusColor(record.status)}
+                  `}
+                >
+                  <div className="text-sm font-semibold">{format(record.date, 'd')}</div>
+                  <div className="flex justify-center mt-1">
+                    {getStatusIcon(record.status)}
+                  </div>
+                  {record.check_in_time && (
+                    <div className="text-xs mt-1">{record.check_in_time}</div>
+                  )}
+                </div>
+              ));
+              
+              return [...paddingCells, ...attendanceCells];
+            })()}
+          </div>
+
+          {/* Legend */}
+          <div className="flex flex-wrap justify-center gap-4 mt-6 text-sm">
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="h-4 w-4 text-green-600" />
+              <span>Present</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <AlertTriangle className="h-4 w-4 text-yellow-600" />
+              <span>Late</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <XCircle className="h-4 w-4 text-red-600" />
+              <span>Absent</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Calendar className="h-4 w-4 text-gray-400" />
+              <span>Weekend</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default EmployeeAttendance;

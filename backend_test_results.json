@@ -1,0 +1,112 @@
+{
+  "summary": {
+    "total_tests": 17,
+    "passed_tests": 16,
+    "failed_tests": 1,
+    "success_rate": 94.11764705882352
+  },
+  "test_details": [
+    {
+      "test_name": "Admin Authentication",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-22T10:02:27.007245"
+    },
+    {
+      "test_name": "Admin Token Retrieved",
+      "success": true,
+      "details": "Admin authentication successful",
+      "timestamp": "2025-10-22T10:02:27.007843"
+    },
+    {
+      "test_name": "Employee Email/Password Authentication",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-22T10:02:27.114876"
+    },
+    {
+      "test_name": "Employee Token Retrieved",
+      "success": true,
+      "details": "Employee authentication successful",
+      "timestamp": "2025-10-22T10:02:27.115472"
+    },
+    {
+      "test_name": "Subscription Features - No Auth (401)",
+      "success": false,
+      "details": "Expected 401, got 403, Error: {'detail': 'Not authenticated'}",
+      "timestamp": "2025-10-22T10:02:27.155721"
+    },
+    {
+      "test_name": "Subscription Features - No Auth (403)",
+      "success": true,
+      "details": "Status: 403, Response: {'detail': 'Not authenticated'}",
+      "timestamp": "2025-10-22T10:02:27.193071"
+    },
+    {
+      "test_name": "Subscription Features Authentication Required",
+      "success": true,
+      "details": "Properly requires authentication (401 or 403)",
+      "timestamp": "2025-10-22T10:02:27.193637"
+    },
+    {
+      "test_name": "Get Subscription Features - Admin",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-22T10:02:27.233351"
+    },
+    {
+      "test_name": "Subscription Features API - Admin",
+      "success": true,
+      "details": "Plan: Enterprise (enterprise), Features: 33",
+      "timestamp": "2025-10-22T10:02:27.233890"
+    },
+    {
+      "test_name": "Get Subscription Features for Plan Verification",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-22T10:02:27.274357"
+    },
+    {
+      "test_name": "Plan Features Verification",
+      "success": true,
+      "details": "Plan: Enterprise (enterprise) - All 9 key features present and valid",
+      "timestamp": "2025-10-22T10:02:27.275056"
+    },
+    {
+      "test_name": "Get Subscription Features - Employee",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-22T10:02:27.314404"
+    },
+    {
+      "test_name": "Employee Subscription Features Access",
+      "success": true,
+      "details": "Employee can access features: Plan Enterprise",
+      "timestamp": "2025-10-22T10:02:27.315046"
+    },
+    {
+      "test_name": "Subscription Features - Graceful Handling",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-22T10:02:27.354575"
+    },
+    {
+      "test_name": "Graceful Handling Verification",
+      "success": true,
+      "details": "Returns default plan: Enterprise (enterprise)",
+      "timestamp": "2025-10-22T10:02:27.355359"
+    },
+    {
+      "test_name": "Get Features for Access Logic Test",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-22T10:02:27.392553"
+    },
+    {
+      "test_name": "Feature Access Logic",
+      "success": true,
+      "details": "Plan: Enterprise - 29 enabled, 0 disabled, 29 numeric features",
+      "timestamp": "2025-10-22T10:02:27.393182"
+    }
+  ]
+}

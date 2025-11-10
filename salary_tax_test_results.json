@@ -1,0 +1,86 @@
+[
+  {
+    "test_name": "Admin Authentication (admin@company.com)",
+    "success": true,
+    "details": "Status: 200",
+    "timestamp": "2025-10-22T05:45:15.248291"
+  },
+  {
+    "test_name": "Admin Token Retrieved",
+    "success": true,
+    "details": "Admin authentication successful",
+    "timestamp": "2025-10-22T05:45:15.248899"
+  },
+  {
+    "test_name": "Create Basic Salary Component",
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Salary component created successfully', 'component_id': '6333514c-8811-4645-8680-4f6887cd4fc5'}",
+    "timestamp": "2025-10-22T05:45:15.318420"
+  },
+  {
+    "test_name": "Get Earnings Components",
+    "success": true,
+    "details": "Status: 200",
+    "timestamp": "2025-10-22T05:45:15.357934"
+  },
+  {
+    "test_name": "Create EPF Configuration",
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Tax configuration created successfully', 'config_id': '3adbf9d3-8064-4482-93ea-17665c1bb099'}",
+    "timestamp": "2025-10-22T05:45:15.427490"
+  },
+  {
+    "test_name": "Get EPF Configuration",
+    "success": true,
+    "details": "Status: 200",
+    "timestamp": "2025-10-22T05:45:15.466694"
+  },
+  {
+    "test_name": "EPF Config Verification",
+    "success": true,
+    "details": "EPF configuration correct",
+    "timestamp": "2025-10-22T05:45:15.467330"
+  },
+  {
+    "test_name": "Update EPF Employee Rate",
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Tax configuration updated successfully'}",
+    "timestamp": "2025-10-22T05:45:15.507853"
+  },
+  {
+    "test_name": "EPF Update Verification",
+    "success": false,
+    "details": "Failed to update employee contribution rate",
+    "timestamp": "2025-10-22T05:45:15.508519"
+  },
+  {
+    "test_name": "Create Test Component for Persistence",
+    "success": true,
+    "details": "Status: 200, Response: {'message': 'Salary component created successfully', 'component_id': '5fc39c85-17cf-428e-abdb-97d4f7c5e3d9'}",
+    "timestamp": "2025-10-22T05:45:15.547878"
+  },
+  {
+    "test_name": "Verify Component Persistence",
+    "success": true,
+    "details": "Status: 200",
+    "timestamp": "2025-10-22T05:45:15.628806"
+  },
+  {
+    "test_name": "Data Persistence Verification",
+    "success": true,
+    "details": "Component data persisted correctly",
+    "timestamp": "2025-10-22T05:45:15.629465"
+  },
+  {
+    "test_name": "Invalid Component - Missing Fields",
+    "success": true,
+    "details": "Status: 422, Response: {'detail': [{'type': 'missing', 'loc': ['body', 'name_in_payslip'], 'msg': 'Field required', 'input': {'category': 'earnings'}, 'url': 'https://errors.pydantic.dev/2.11/v/missing'}]}",
+    "timestamp": "2025-10-22T05:45:15.668417"
+  },
+  {
+    "test_name": "Invalid Component - Invalid Category",
+    "success": false,
+    "details": "Expected 422, got 200, Error: {'message': 'Salary component created successfully', 'component_id': '4c6d573b-42db-4de3-a0c0-2f324e09bced'}",
+    "timestamp": "2025-10-22T05:45:15.710768"
+  }
+]
