@@ -326,7 +326,8 @@ const Sidebar = ({ collapsed, onToggle }) => {
   return (
     <div className={cn(
       "fixed left-0 top-0 z-40 h-full bg-card border-r border-border transition-all duration-300 ease-in-out",
-      collapsed ? "w-16" : "w-64"
+      collapsed ? "w-16" : "w-64",
+      "flex flex-col"
     )}>
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-border">
@@ -360,7 +361,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
         </Button>
       </div>
 
-      {/* Navigation */}
+      {/* Navigation (scrollable) */}
       <ScrollArea className="flex-1 px-3 py-4">
         <nav className="space-y-2">
           {menuItems.map((item, index) => {
@@ -472,10 +473,10 @@ const Sidebar = ({ collapsed, onToggle }) => {
             );
           })}
         </nav>
-        
-        <Separator className="my-4" />
-        
-        {/* Logout */}
+      </ScrollArea>
+
+      {/* Footer (static at bottom) */}
+      <div className="mt-auto p-3 border-t border-border">
         <Button
           variant="ghost"
           className={cn(
@@ -488,7 +489,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
           <LogOut className={cn("h-4 w-4", !collapsed && "mr-3")} />
           {!collapsed && "Logout"}
         </Button>
-      </ScrollArea>
+      </div>
     </div>
   );
 };

@@ -80,14 +80,14 @@ const UpgradeRequired = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-background to-background flex items-center justify-center p-4">
       <Card className="max-w-2xl w-full shadow-2xl border-2">
         <CardContent className="p-8">
           {/* Icon */}
           <div className="flex justify-center mb-6">
             <div className="relative">
-              <div className="absolute inset-0 bg-blue-500/20 dark:bg-blue-400/20 blur-xl rounded-full"></div>
-              <div className="relative bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-400 dark:to-blue-500 p-6 rounded-full">
+              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full"></div>
+              <div className="relative bg-gradient-to-br from-primary to-primary p-6 rounded-full">
                 <Lock className="h-12 w-12 text-white" />
               </div>
             </div>
@@ -98,8 +98,8 @@ const UpgradeRequired = () => {
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               Upgrade to {requiredPlanInfo.plan}
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              Unlock <span className="font-semibold text-blue-600 dark:text-blue-400">{featureName}</span> and more!
+            <p className="text-lg text-muted-foreground">
+              Unlock <span className="font-semibold text-primary">{featureName}</span> and more!
             </p>
           </div>
 
@@ -109,9 +109,9 @@ const UpgradeRequired = () => {
               <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Current Plan</div>
               <div className="text-xl font-bold text-gray-900 dark:text-white">{currentPlan}</div>
             </div>
-            <div className="text-center p-4 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-400 dark:to-blue-500 rounded-lg">
-              <div className="text-sm text-blue-100 mb-1">Required Plan</div>
-              <div className="text-xl font-bold text-white flex items-center justify-center gap-2">
+            <div className="text-center p-4 bg-gradient-to-br from-primary to-primary rounded-lg">
+              <div className="text-sm text-white/80 mb-1">Required Plan</div>
+              <div className="text-xl font-bold text-primary-foreground flex items-center justify-center gap-2">
                 <Sparkles className="h-5 w-5" />
                 {requiredPlanInfo.plan}
               </div>
@@ -119,9 +119,9 @@ const UpgradeRequired = () => {
           </div>
 
           {/* Benefits */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-6 mb-8">
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <Zap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          <div className="bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-lg p-6 mb-8">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+              <Zap className="h-5 w-5 text-primary" />
               What you'll get with {requiredPlanInfo.plan}:
             </h3>
             <ul className="space-y-3">
@@ -212,7 +212,8 @@ const UpgradeRequired = () => {
             </Button>
             <Button
               onClick={handleUpgrade}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 text-white"
+              variant="default"
+              className="flex-1"
             >
               Upgrade Now
               <ArrowRight className="h-4 w-4 ml-2" />

@@ -266,7 +266,7 @@ const Dashboard = () => {
             <Calendar className="w-4 h-4 mr-2" />
             This Month
           </Button>
-          <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+          <Button size="sm" className="">
             Generate Report
           </Button>
         </div>
@@ -616,7 +616,7 @@ const Dashboard = () => {
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <UserPlus className="h-5 w-5 text-teal-600" />
+              <UserPlus className="h-5 w-5 text-primary" />
               <span>Quick Actions</span>
             </CardTitle>
           </CardHeader>
@@ -624,7 +624,7 @@ const Dashboard = () => {
             {/* Primary Action - Solid Teal */}
             <Button
               onClick={() => window.location.href = '/employees/new'}
-              className="w-full h-14 bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-start px-4 space-x-3 shadow-sm transition-all duration-200"
+              className="w-full h-14 text-white flex items-center justify-start px-4 space-x-3 shadow-sm transition-all duration-200"
             >
               <UserPlus className="h-5 w-5" />
               <span className="font-medium">Add New Employee</span>
@@ -634,27 +634,27 @@ const Dashboard = () => {
             <Button
               onClick={() => window.location.href = '/payroll/run'}
               variant="outline"
-              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-teal-900/30 border-2 border-teal-600 dark:border-teal-500/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
+              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-primary/30 border-2 border-primary dark:border-primary/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
             >
-              <DollarSign className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+              <DollarSign className="h-5 w-5 text-primary" />
               <span className="font-medium">Run Payroll</span>
             </Button>
 
             <Button
               onClick={() => window.location.href = '/leave-attendance'}
               variant="outline"
-              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-teal-900/30 border-2 border-teal-600 dark:border-teal-500/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
+              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-primary/30 border-2 border-primary dark:border-primary/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
             >
-              <CheckCircle className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+              <CheckCircle className="h-5 w-5 text-primary" />
               <span className="font-medium">Approve Leaves</span>
             </Button>
 
             <Button
               onClick={() => window.location.href = '/leave-attendance'}
               variant="outline"
-              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-teal-900/30 border-2 border-teal-600 dark:border-teal-500/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
+              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-primary/30 border-2 border-primary dark:border-primary/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
             >
-              <ClipboardList className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+              <ClipboardList className="h-5 w-5 text-primary" />
               <span className="font-medium">Manage Attendance</span>
             </Button>
           </CardContent>

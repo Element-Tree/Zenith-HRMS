@@ -283,9 +283,27 @@ const AddEmployee = () => {
     
     setLoading(true);
     try {
+      // Sanitize optional date/number fields before submit
+      const toNumberOrNull = (v) => (v === '' || v === null || v === undefined ? null : Number(v));
+
+      const sanitizedRoot = {
+        ...formData,
+        probation_end_date: formData.probation_end_date ? formData.probation_end_date : null,
+        custom_casual_leave_per_month: toNumberOrNull(formData.custom_casual_leave_per_month),
+        custom_sick_leave_per_year: toNumberOrNull(formData.custom_sick_leave_per_year),
+        annual_leave_days: toNumberOrNull(formData.annual_leave_days),
+      };
+
+      // If employee is on probation, force leave fields to null
+      if (sanitizedRoot.is_on_probation) {
+        sanitizedRoot.custom_casual_leave_per_month = null;
+        sanitizedRoot.custom_sick_leave_per_year = null;
+        sanitizedRoot.annual_leave_days = null;
+      }
+
       // Prepare data with component-based salary structure
       const processedData = {
-        ...formData,
+        ...sanitizedRoot,
         salary_structure: {
           // Keep legacy fields empty for backward compatibility
           basic_salary: 0,
