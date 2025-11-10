@@ -56,8 +56,8 @@ import PayrollAnalytics from "./pages/PayrollAnalytics";
 import CustomReports from "./pages/CustomReports";
 import AuditLogs from "./pages/AuditLogs";
 // Public pages
-import PricingPage from "./pages/public/PricingPage";
-import SignupPage from "./pages/public/SignupPage";
+import PricingPage from "./pages/auth/PricingPage";
+import SignupPage from "./pages/auth/SignupPage";
 import Payment from "./pages/Payment";
 
 // Admin Layout Component

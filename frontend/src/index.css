@@ -20,44 +20,44 @@ code {
 
 @layer base {
   :root {
-        /* Light Theme - Ocean Green */
+        /* Light Theme - Emerald */
         --background: 0 0% 100%;
         --foreground: 210 40% 8%;
         --card: 0 0% 100%;
         --card-foreground: 210 40% 8%;
         --popover: 0 0% 100%;
         --popover-foreground: 210 40% 8%;
-        --primary: 174 63% 27%;  /* Ocean Green #008B74 */
+        --primary: 160 84% 39%;  /* Emerald 600 #059669 */
         --primary-foreground: 0 0% 98%;
         --secondary: 210 40% 96%;
         --secondary-foreground: 210 40% 10%;
         --muted: 210 40% 96%;
         --muted-foreground: 215 16% 47%;
-        --accent: 174 63% 45%;
+        --accent: 160 84% 45%;
         --accent-foreground: 0 0% 98%;
         --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 98%;
         --border: 214 32% 91%;
         --input: 214 32% 91%;
-        --ring: 174 63% 27%;
+        --ring: 160 84% 39%;
         --success: 142 76% 36%;
         --success-foreground: 355 100% 97%;
         --warning: 38 92% 50%;
         --warning-foreground: 48 96% 89%;
         --info: 199 89% 48%;
         --info-foreground: 210 20% 98%;
-        --chart-1: 174 63% 27%;
+        --chart-1: 160 84% 39%;
         --chart-2: 142 76% 36%;
         --chart-3: 199 89% 48%;
         --chart-4: 38 92% 50%;
         --chart-5: 0 84% 60%;
         --radius: 0.5rem;
         
-        /* Ocean Green Brand Colors */
-        --ocean-primary: 174 63% 27%;    /* #008B74 */
-        --ocean-secondary: 174 40% 20%;   /* Darker Ocean */
-        --ocean-light: 174 63% 85%;      /* Light Ocean */
-        --ocean-accent: 174 63% 45%;     /* Brighter Ocean */
+        /* Emerald Brand Colors */
+        --ocean-primary: 160 84% 39%;    /* Emerald primary */
+        --ocean-secondary: 160 50% 28%;  /* Darker Emerald */
+        --ocean-light: 160 60% 85%;      /* Light Emerald */
+        --ocean-accent: 160 84% 45%;     /* Brighter Emerald */
     }
   .dark {
         /* IMPRESSIVE Dark Theme - Modern Glassmorphism with Depth */
@@ -67,41 +67,41 @@ code {
         --card-foreground: 210 40% 98%;
         --popover: 220 30% 10%;
         --popover-foreground: 210 40% 98%;
-        --primary: 174 75% 50%;          /* Vibrant glowing Ocean Green #14d9be */
+        --primary: 160 84% 45%;          /* Vibrant Emerald */
         --primary-foreground: 222 47% 4%;
         --secondary: 220 25% 12%;        /* Rich secondary surfaces */
         --secondary-foreground: 210 20% 90%;
         --muted: 220 20% 14%;            /* Muted surfaces with depth */
         --muted-foreground: 215 15% 70%; /* Lighter muted text */
-        --accent: 174 80% 55%;           /* Bright glowing accent */
+        --accent: 160 84% 55%;           /* Bright glowing emerald */
         --accent-foreground: 222 47% 4%;
         --destructive: 0 85% 60%;        /* Vibrant red */
         --destructive-foreground: 0 0% 100%;
         --border: 220 20% 18%;           /* Visible borders with subtle glow */
         --input: 220 30% 10%;            /* Deep input backgrounds */
-        --ring: 174 75% 50%;             /* Glowing focus rings */
+        --ring: 160 84% 45%;             /* Glowing focus rings */
         --success: 142 80% 45%;          /* Bright green */
         --success-foreground: 0 0% 100%;
         --warning: 38 95% 55%;           /* Vibrant amber */
         --warning-foreground: 222 47% 4%;
         --info: 199 95% 55%;             /* Bright cyan */
         --info-foreground: 0 0% 100%;
-        --chart-1: 174 75% 50%;          /* Glowing Ocean Green */
+        --chart-1: 160 84% 45%;          /* Emerald */
         --chart-2: 199 95% 55%;          /* Bright cyan */
         --chart-3: 38 95% 55%;           /* Bright amber */
         --chart-4: 291 60% 60%;          /* Vibrant purple */
         --chart-5: 0 85% 60%;            /* Vibrant red */
         
-        /* Ocean Green Brand Colors - Glowing Edition */
-        --ocean-primary: 174 75% 50%;    /* Main glowing Ocean Green */
-        --ocean-secondary: 174 60% 40%;  /* Rich Ocean Green */
-        --ocean-light: 174 70% 70%;      /* Bright Ocean */
-        --ocean-accent: 174 80% 55%;     /* Ultra bright for highlights */
+        /* Emerald Brand Colors - Glowing Edition */
+        --ocean-primary: 160 84% 45%;    /* Main Emerald */
+        --ocean-secondary: 160 60% 35%;  /* Rich Emerald */
+        --ocean-light: 160 70% 70%;      /* Bright Emerald */
+        --ocean-accent: 160 84% 55%;     /* Ultra bright for highlights */
         
         /* Glassmorphism & Shadow Variables */
         --glass-bg: 220 30% 12%;         /* Glass background */
         --glass-border: 220 20% 20%;     /* Glass border */
-        --shadow-glow: 174 75% 50%;      /* Glow color for shadows */
+        --shadow-glow: 160 84% 45%;      /* Glow color for shadows */
     }
 }
 
@@ -124,7 +124,7 @@ code {
     background: linear-gradient(135deg, hsl(var(--card)), hsl(220 30% 10%));
     box-shadow: 
       0 4px 24px -4px rgba(0, 0, 0, 0.5),
-      0 0 0 1px rgba(20, 217, 190, 0.05),
+      0 0 0 1px hsl(var(--primary) / 0.05),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.03);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -132,8 +132,8 @@ code {
   .dark .card-elevated:hover {
     box-shadow: 
       0 8px 32px -4px rgba(0, 0, 0, 0.6),
-      0 0 0 1px rgba(20, 217, 190, 0.15),
-      0 0 20px -4px rgba(20, 217, 190, 0.2),
+      0 0 0 1px hsl(var(--primary) / 0.15),
+      0 0 20px -4px hsl(var(--primary) / 0.2),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
     transform: translateY(-2px);
   }
@@ -151,21 +151,21 @@ code {
 
   /* Glowing Text */
   .dark .text-glow {
-    text-shadow: 0 0 20px rgba(20, 217, 190, 0.5);
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.5);
   }
 
   /* Gradient Button Glow */
   .dark .btn-glow {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(174 80% 45%));
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary)));
     box-shadow: 
-      0 4px 15px rgba(20, 217, 190, 0.3),
+      0 4px 15px hsl(var(--primary) / 0.3),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
   }
 
   .dark .btn-glow:hover {
     box-shadow: 
-      0 6px 25px rgba(20, 217, 190, 0.5),
+      0 6px 25px hsl(var(--primary) / 0.5),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
     transform: translateY(-1px);
   }
@@ -174,14 +174,14 @@ code {
   .dark .neon-border {
     border: 1px solid hsl(var(--primary) / 0.5);
     box-shadow: 
-      0 0 10px rgba(20, 217, 190, 0.2),
-      inset 0 0 10px rgba(20, 217, 190, 0.05);
+      0 0 10px hsl(var(--primary) / 0.2),
+      inset 0 0 10px hsl(var(--primary) / 0.05);
   }
 
   /* Progress Bar Glow */
   .dark .progress-glow {
-    box-shadow: 0 0 10px rgba(20, 217, 190, 0.4);
-    background: linear-gradient(90deg, hsl(var(--primary)), hsl(174 80% 60%));
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.4);
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary)));
   }
 
   /* Shimmer Effect */
@@ -271,7 +271,7 @@ code {
   }
 
   .dark .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(20, 217, 190, 0.3);
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
   }
 
   /* Smooth Background Gradient */
@@ -298,7 +298,7 @@ code {
     bottom: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(20, 217, 190, 0.3), rgba(20, 217, 190, 0));
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.3), hsl(var(--primary) / 0));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;

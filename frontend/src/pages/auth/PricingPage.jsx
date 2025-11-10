@@ -71,7 +71,7 @@ const PricingPage = () => {
               <span className="text-xl font-bold text-gray-900 dark:text-white">Elevate Payroll</span>
             </div>
             <Button
-              variant="ghost"
+              variant="outline"
               onClick={() => navigate('/login')}
             >
               Sign In

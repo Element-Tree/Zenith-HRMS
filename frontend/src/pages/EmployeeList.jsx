@@ -1040,7 +1040,7 @@ const EmployeeList = () => {
                     className={`${
                       employeeLimit && !employeeLimit.can_add_more
                         ? 'bg-gray-400 cursor-not-allowed hover:bg-gray-400'
-                        : 'bg-emerald-600 hover:bg-emerald-700'
+                        : ''
                     }`}
                     disabled={employeeLimit && !employeeLimit.can_add_more}
                     onClick={() => {
