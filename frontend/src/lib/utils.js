@@ -148,7 +148,14 @@ export function generateEmployeeId(prefix = 'EMP') {
 // Calculate gross salary
 export function calculateGrossSalary(salaryStructure) {
   if (!salaryStructure) return 0;
-  
+
+  // Component-based salary support
+  if (Array.isArray(salaryStructure.salary_components) && salaryStructure.salary_components.length > 0 && salaryStructure.use_component_based_salary) {
+    return salaryStructure.salary_components
+      .filter((c) => c && c.is_active !== false && c.component_type === 'earnings')
+      .reduce((sum, c) => sum + (Number(c.amount) || 0), 0);
+  }
+
   const {
     basic_salary = 0,
     house_rent_allowance = 0,
@@ -163,23 +170,31 @@ export function calculateGrossSalary(salaryStructure) {
     other_benefits = 0,
     special_allowance = 0 // Legacy field
   } = salaryStructure;
-  
-  // Convert all values to numbers to prevent NaN
+
   const toNum = (val) => Number(val) || 0;
-  
-  return toNum(basic_salary) + 
-         toNum(house_rent_allowance || hra) + 
-         toNum(medical_allowance) + 
-         toNum(leave_travel_allowance || travel_allowance) + 
-         toNum(conveyance_allowance || food_allowance) + 
-         toNum(performance_incentive || internet_allowance) + 
-         toNum(other_benefits || special_allowance);
+
+  return (
+    toNum(basic_salary) +
+    toNum(house_rent_allowance || hra) +
+    toNum(medical_allowance) +
+    toNum(leave_travel_allowance || travel_allowance) +
+    toNum(conveyance_allowance || food_allowance) +
+    toNum(performance_incentive || internet_allowance) +
+    toNum(other_benefits || special_allowance)
+  );
 }
 
 // Calculate total deductions
 export function calculateTotalDeductions(salaryStructure) {
   if (!salaryStructure) return 0;
-  
+
+  // Component-based salary support
+  if (Array.isArray(salaryStructure.salary_components) && salaryStructure.salary_components.length > 0 && salaryStructure.use_component_based_salary) {
+    return salaryStructure.salary_components
+      .filter((c) => c && c.is_active !== false && c.component_type === 'deductions')
+      .reduce((sum, c) => sum + (Number(c.amount) || 0), 0);
+  }
+
   const {
     pf_employee = 0,
     esi_employee = 0,
@@ -188,10 +203,9 @@ export function calculateTotalDeductions(salaryStructure) {
     loan_deductions = 0,
     others = 0
   } = salaryStructure;
-  
-  // Convert all values to numbers to prevent NaN
+
   const toNum = (val) => Number(val) || 0;
-  
+
   return toNum(pf_employee) + toNum(esi_employee) + toNum(professional_tax) + toNum(tds) + toNum(loan_deductions) + toNum(others);
 }
 
@@ -206,7 +220,7 @@ export function calculateNetSalary(salaryStructure) {
 export function getStatusColor(status) {
   switch (status?.toLowerCase()) {
     case 'active':
-      return 'text-emerald-600 bg-emerald-100';
+      return 'text-primary bg-primary/10';
     case 'resigned':
       return 'text-yellow-600 bg-yellow-100';
     case 'terminated':

@@ -1055,7 +1055,7 @@ const EmployeeDashboard = () => {
       )}
 
       {/* Welcome Header - Impressive Dark Mode */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 dark:from-teal-500 dark:via-cyan-500 dark:to-blue-500 rounded-xl p-8 text-white shadow-elevated dark:shadow-[0_8px_32px_rgba(20,217,190,0.3)] dark:border dark:border-teal-400/30">
+      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 dark:from-primary dark:via-primary dark:to-primary rounded-xl p-8 text-white shadow-elevated dark:shadow-[0_8px_32px_hsl(var(--primary)_/_0.3)] dark:border dark:border-primary/30">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 -left-4 w-72 h-72 bg-white rounded-full mix-blend-overlay filter blur-xl animate-blob"></div>
@@ -1065,20 +1065,20 @@ const EmployeeDashboard = () => {
         
         <div className="relative flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <Avatar className="h-20 w-20 border-4 border-white dark:border-teal-300 shadow-lg">
+            <Avatar className="h-20 w-20 border-4 border-white dark:border-primary/40 shadow-lg">
               <AvatarImage src={employeeData?.photo_url} />
-              <AvatarFallback className="text-xl bg-white text-blue-600 dark:bg-teal-100 dark:text-teal-700 font-bold">
+              <AvatarFallback className="text-xl bg-white text-blue-600 dark:bg-primary/20 dark:text-primary font-bold">
                 {employeeData?.name?.split(' ').map(n => n[0]).join('') || user?.username?.slice(0,2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div>
               <h1 className="text-4xl font-bold mb-2 dark:text-glow">Welcome back, {employeeData?.name?.split(' ')[0] || user?.username}! 👋</h1>
-              <p className="text-blue-100 dark:text-teal-100 text-lg">{employeeData?.designation} • {employeeData?.department}</p>
-              <p className="text-blue-100 dark:text-teal-100 text-sm">Employee ID: {employeeData?.employee_id}</p>
+              <p className="text-blue-100 dark:text-primary/20 text-lg">{employeeData?.designation} • {employeeData?.department}</p>
+              <p className="text-blue-100 dark:text-primary/20 text-sm">Employee ID: {employeeData?.employee_id}</p>
             </div>
           </div>
           <div className="text-right">
-            <p className="text-sm text-blue-100 dark:text-teal-100 mb-2">{new Date().toLocaleDateString('en-IN', { 
+            <p className="text-sm text-blue-100 dark:text-primary/20 mb-2">{new Date().toLocaleDateString('en-IN', { 
               weekday: 'long', 
               year: 'numeric', 
               month: 'long', 

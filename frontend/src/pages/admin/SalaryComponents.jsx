@@ -185,6 +185,9 @@ const SalaryComponents = () => {
         ...formData,
         category: activeTab
       };
+      // Strip deprecated amount fields from payload
+      delete payload.amount_value;
+      delete payload.amount_per_month;
 
       if (editingComponent) {
         await axios.put(`${API}/salary-components/${editingComponent.component_id}`, payload);
@@ -311,42 +314,27 @@ const SalaryComponents = () => {
         </div>
 
         {!formData.is_variable && (
-          <>
-            <div>
-              <Label>Calculation Type *</Label>
-              <RadioGroup
-                value={formData.calculation_type}
-                onValueChange={(value) => setFormData({ ...formData, calculation_type: value })}
-                className="mt-2"
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="flat_amount" id="flat_amount" />
-                  <Label htmlFor="flat_amount" className="font-normal">Flat Amount</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="percentage_of_ctc" id="percentage_of_ctc" />
-                  <Label htmlFor="percentage_of_ctc" className="font-normal">Percentage of CTC</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="percentage_of_basic" id="percentage_of_basic" />
-                  <Label htmlFor="percentage_of_basic" className="font-normal">Percentage of Basic</Label>
-                </div>
-              </RadioGroup>
-            </div>
-
-            <div>
-              <Label htmlFor="amount_value">
-                {formData.calculation_type === 'flat_amount' ? 'Enter Amount' : 'Enter Percentage'}
-              </Label>
-              <Input
-                id="amount_value"
-                type="number"
-                value={formData.amount_value}
-                onChange={(e) => setFormData({ ...formData, amount_value: parseFloat(e.target.value) || 0 })}
-                placeholder="0"
-              />
-            </div>
-          </>
+          <div>
+            <Label>Calculation Type *</Label>
+            <RadioGroup
+              value={formData.calculation_type}
+              onValueChange={(value) => setFormData({ ...formData, calculation_type: value })}
+              className="mt-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="flat_amount" id="flat_amount" />
+                <Label htmlFor="flat_amount" className="font-normal">Flat Amount</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="percentage_of_ctc" id="percentage_of_ctc" />
+                <Label htmlFor="percentage_of_ctc" className="font-normal">Percentage of CTC</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="percentage_of_basic" id="percentage_of_basic" />
+                <Label htmlFor="percentage_of_basic" className="font-normal">Percentage of Basic</Label>
+              </div>
+            </RadioGroup>
+          </div>
         )}
 
         <div className="flex items-center space-x-2">
@@ -760,16 +748,7 @@ const SalaryComponents = () => {
         </RadioGroup>
       </div>
 
-      <div>
-        <Label htmlFor="amount_per_month">Enter Amount per month</Label>
-        <Input
-          id="amount_per_month"
-          type="number"
-          value={formData.amount_per_month}
-          onChange={(e) => setFormData({ ...formData, amount_per_month: parseFloat(e.target.value) || 0 })}
-          placeholder="0"
-        />
-      </div>
+      {/* Removed per-month amount entry; amounts are set per employee/usage */}
 
       <div className="flex items-center space-x-2">
         <Checkbox
@@ -793,7 +772,7 @@ const SalaryComponents = () => {
             Configure earnings, deductions, benefits, and reimbursements
           </p>
         </div>
-        <Button onClick={() => handleOpenDialog()} className="bg-emerald-600 hover:bg-emerald-700">
+        <Button onClick={() => handleOpenDialog()} className="bg-primary hover:bg-primary/90">
           <Plus className="w-4 h-4 mr-2" />
           Add Component
         </Button>
@@ -882,9 +861,9 @@ const SalaryComponents = () => {
                                   <Badge variant="outline">Variable</Badge>
                                 ) : (
                                   <>
-                                    {component.calculation_type === 'flat_amount' && `₹${component.amount_value}`}
-                                    {component.calculation_type === 'percentage_of_ctc' && `${component.amount_value}% of CTC`}
-                                    {component.calculation_type === 'percentage_of_basic' && `${component.amount_value}% of Basic`}
+                                    {component.calculation_type === 'flat_amount' && `Flat Amount`}
+                                    {component.calculation_type === 'percentage_of_ctc' && `Percentage of CTC`}
+                                    {component.calculation_type === 'percentage_of_basic' && `Percentage of Basic`}
                                   </>
                                 )}
                               </TableCell>
@@ -956,7 +935,7 @@ const SalaryComponents = () => {
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleSave} className="bg-emerald-600 hover:bg-emerald-700">
+            <Button onClick={handleSave} className="bg-primary hover:bg-primary/90">
               {editingComponent ? 'Update' : 'Save'}
             </Button>
           </DialogFooter>

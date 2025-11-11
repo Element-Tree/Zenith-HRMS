@@ -667,7 +667,7 @@ const EmployeeAttendanceNew = () => {
             }
           }}>
             <DialogTrigger asChild>
-              <Button className="bg-teal-600 hover:bg-teal-700 text-white dark:bg-teal-500 dark:hover:bg-teal-600">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
                 <Clock className="w-4 h-4 mr-2" />
                 Log OT
               </Button>

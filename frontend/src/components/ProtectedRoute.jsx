@@ -6,12 +6,11 @@ import { Loader2 } from 'lucide-react';
 const ProtectedRoute = ({ children, requireRole = null, allowedRoles = [] }) => {
   const { isAuthenticated, user, loading } = useAuth();
   const location = useLocation();
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex items-center space-x-2">
-          <Loader2 className="h-6 w-6 animate-spin text-emerald-600" />
+          <Loader2 className="h-6 w-6 animate-spin text-primary" />
           <span className="text-gray-600">Loading...</span>
         </div>
       </div>

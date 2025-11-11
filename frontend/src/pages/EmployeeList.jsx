@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -84,7 +84,8 @@ const API = `${BACKEND_URL}/api`;
 
 const EmployeeList = () => {
   const navigate = useNavigate();
-  const { hasFeature, planSlug } = useSubscription();
+  const { hasFeature, planSlug, planName } = useSubscription();
+  const location = useLocation();
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -134,6 +135,7 @@ const EmployeeList = () => {
     try {
       const response = await axios.get(`${API}/employees`);
       setEmployees(response.data);
+      console.log(response.data)
       // Fetch ratings for all employees
       fetchAllRatings(response.data);
     } catch (error) {
@@ -180,7 +182,7 @@ const EmployeeList = () => {
   const getRatingColor = (rating) => {
     if (rating >= 4.5) {
       return {
-        bg: 'from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20',
+        bg: 'from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20',
         border: 'border-green-200 dark:border-green-700',
         text: 'text-green-600 dark:text-green-400',
         star: 'fill-green-500 text-green-500',
@@ -401,6 +403,14 @@ const EmployeeList = () => {
         
         if (aRating < bRating) return sortConfig.direction === 'asc' ? -1 : 1;
         if (aRating > bRating) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      }
+      // Special handling for salary (computed gross)
+      if (sortConfig.key === 'salary') {
+        const aSalary = calculateGrossSalary(a.salary_structure || {});
+        const bSalary = calculateGrossSalary(b.salary_structure || {});
+        if (aSalary < bSalary) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aSalary > bSalary) return sortConfig.direction === 'asc' ? 1 : -1;
         return 0;
       }
       
@@ -875,12 +885,16 @@ const EmployeeList = () => {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    onClick={canExport ? exportEmployeeData : undefined}
-                    disabled={exporting || !canExport}
+                    onClick={() => {
+                      if (!canExport) {
+                        navigate('/upgrade-required', { state: { from: location.pathname, requiredFeature: 'custom_reports', currentPlan: planName, currentPlanSlug: planSlug } });
+                        return;
+                      }
+                      exportEmployeeData();
+                    }}
+                    disabled={exporting}
                     className={`${
-                      !canExport 
-                        ? 'cursor-not-allowed opacity-60 border-gray-400 text-gray-400 dark:border-gray-600 dark:text-gray-500' 
-                        : 'dark:border-gray-600 dark:text-gray-300'
+                      'dark:border-gray-600 dark:text-gray-300'
                     }`}
                   >
                     {!canExport && <Lock className="w-4 h-4 mr-2" />}
@@ -915,12 +929,16 @@ const EmployeeList = () => {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    onClick={canExport ? exportPayrollData : undefined}
-                    disabled={exporting || !canExport}
+                    onClick={() => {
+                      if (!canExport) {
+                        navigate('/upgrade-required', { state: { from: location.pathname, requiredFeature: 'payroll_analytics', currentPlan: planName, currentPlanSlug: planSlug } });
+                        return;
+                      }
+                      exportPayrollData();
+                    }}
+                    disabled={exporting}
                     className={`${
-                      !canExport 
-                        ? 'cursor-not-allowed opacity-60 border-gray-400 text-gray-400 dark:border-gray-600 dark:text-gray-500' 
-                        : 'dark:border-gray-600 dark:text-gray-300'
+                      'dark:border-gray-600 dark:text-gray-300'
                     }`}
                   >
                     {!canExport && <Lock className="w-4 h-4 mr-2" />}
@@ -955,12 +973,15 @@ const EmployeeList = () => {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    onClick={canExport ? generateSampleExcel : undefined}
-                    disabled={!canExport}
+                    onClick={() => {
+                      if (!canExport) {
+                        navigate('/upgrade-required', { state: { from: location.pathname, requiredFeature: 'custom_reports', currentPlan: planName, currentPlanSlug: planSlug } });
+                        return;
+                      }
+                      generateSampleExcel();
+                    }}
                     className={`${
-                      !canExport 
-                        ? 'cursor-not-allowed opacity-60 border-gray-400 text-gray-400 dark:border-gray-600 dark:text-gray-500' 
-                        : 'dark:border-gray-600 dark:text-gray-300'
+                      'dark:border-gray-600 dark:text-gray-300'
                     }`}
                   >
                     {!canExport && <Lock className="w-4 h-4 mr-2" />}
@@ -987,14 +1008,19 @@ const EmployeeList = () => {
                     size="sm" 
                     className={`${
                       !canBulkImport 
-                        ? 'cursor-not-allowed opacity-60 border-gray-400 text-gray-400 dark:border-gray-600 dark:text-gray-500' 
+                        ? 'dark:border-gray-600 dark:text-gray-300 cursor-pointer' 
                         : 'dark:border-gray-600 dark:text-gray-300 cursor-pointer'
                     }`}
                     asChild={canBulkImport}
+                    onClick={() => {
+                      if (!canBulkImport) {
+                        navigate('/upgrade-required', { state: { from: location.pathname, requiredFeature: 'bulk_employee_import', currentPlan: planName, currentPlanSlug: planSlug } });
+                      }
+                    }}
                   >
                     <label 
                       htmlFor={canBulkImport ? "excel-import" : undefined} 
-                      className={`flex items-center ${canBulkImport ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                      className={`flex items-center ${canBulkImport ? 'cursor-pointer' : 'cursor-pointer'}`}
                     >
                       {importing ? (
                         <>
@@ -1038,15 +1064,14 @@ const EmployeeList = () => {
                   <Button 
                     size="sm" 
                     className={`${
-                      employeeLimit && !employeeLimit.can_add_more
-                        ? 'bg-gray-400 cursor-not-allowed hover:bg-gray-400'
-                        : ''
+                      employeeLimit && !employeeLimit.can_add_more ? '' : ''
                     }`}
-                    disabled={employeeLimit && !employeeLimit.can_add_more}
                     onClick={() => {
-                      if (employeeLimit && employeeLimit.can_add_more) {
-                        navigate('/employees/new');
+                      if (employeeLimit && !employeeLimit.can_add_more) {
+                        navigate('/upgrade-required', { state: { from: location.pathname, requiredFeature: 'employee_limit', currentPlan: planName, currentPlanSlug: planSlug } });
+                        return;
                       }
+                      navigate('/employees/new');
                     }}
                   >
                     {employeeLimit && !employeeLimit.can_add_more && <Lock className="w-4 h-4 mr-2" />}
@@ -1073,7 +1098,7 @@ const EmployeeList = () => {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <Users className="h-8 w-8 text-emerald-600" />
+              <Users className="h-8 w-8 text-primary" />
               <div>
                 <p className="text-2xl font-bold">{employees.length}</p>
                 <p className="text-xs text-gray-500">Total Employees</p>
@@ -1084,8 +1109,8 @@ const EmployeeList = () => {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
-                <div className="w-4 h-4 bg-emerald-600 rounded-full"></div>
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <div className="w-4 h-4 bg-primary rounded-full"></div>
               </div>
               <div>
                 <p className="text-2xl font-bold">
@@ -1274,11 +1299,11 @@ const EmployeeList = () => {
                   </TableHead>
                   <TableHead 
                     className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                    onClick={() => handleSort('salary_structure.basic_salary')}
+                    onClick={() => handleSort('salary')}
                   >
                     <div className="flex items-center space-x-2">
                       <span>Salary</span>
-                      {getSortIcon('salary_structure.basic_salary')}
+                      {getSortIcon('salary')}
                     </div>
                   </TableHead>
                   <TableHead 
@@ -1336,7 +1361,7 @@ const EmployeeList = () => {
                       <TableCell>
                         <div className="flex items-center space-x-3">
                           <Avatar>
-                            <AvatarFallback className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+                            <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary">
                               {getInitials(employee.name)}
                             </AvatarFallback>
                           </Avatar>
@@ -1374,7 +1399,7 @@ const EmployeeList = () => {
                           {employee.status}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-gray-800 dark:text-gray-300">{formatCurrency(employee.salary_structure.basic_salary)}</TableCell>
+                      <TableCell className="text-gray-800 dark:text-gray-300">{formatCurrency(calculateGrossSalary(employee.salary_structure))}</TableCell>
                       <TableCell>
                         {employee.status === 'active' ? (
                           employeeRatings[employee.employee_id] ? (
@@ -1431,7 +1456,7 @@ const EmployeeList = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-8 w-8 p-0 hover:bg-emerald-100 hover:text-emerald-600"
+                            className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary"
                             onClick={() => navigate(`/employees/${employee.employee_id}/edit`)}
                             title="Edit Employee"
                           >
@@ -1540,7 +1565,7 @@ const EmployeeList = () => {
           <DialogHeader>
             <DialogTitle className="flex items-center space-x-3">
               <Avatar className="h-12 w-12">
-                <AvatarFallback className="bg-emerald-100 text-emerald-600 text-lg">
+                <AvatarFallback className="bg-primary/10 text-primary text-lg">
                   {viewDialog.employee ? getInitials(viewDialog.employee.name) : ''}
                 </AvatarFallback>
               </Avatar>
@@ -1783,79 +1808,110 @@ const EmployeeList = () => {
               {viewDialog.employee.salary_structure && (
                 <div>
                   <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">Salary Structure</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Earnings */}
-                    <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-700">
-                      <h4 className="font-semibold text-green-800 dark:text-green-300 mb-3">Earnings</h4>
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Basic Salary</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.basic_salary || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">House Rent Allowance</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.house_rent_allowance || viewDialog.employee.salary_structure.hra || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Medical Allowance</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.medical_allowance || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Leave Travel Allowance</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.leave_travel_allowance || viewDialog.employee.salary_structure.travel_allowance || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Bonus</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.conveyance_allowance || viewDialog.employee.salary_structure.food_allowance || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Performance Incentive</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.performance_incentive || viewDialog.employee.salary_structure.internet_allowance || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Other Benefits</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.other_benefits || viewDialog.employee.salary_structure.special_allowance || 0)}</span>
-                        </div>
-                      </div>
-                    </div>
 
-                    {/* Deductions */}
-                    <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-700">
-                      <h4 className="font-semibold text-red-800 dark:text-red-300 mb-3">Deductions</h4>
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">PF (Employee)</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.pf_employee || 0)}</span>
+                  {Array.isArray(viewDialog.employee.salary_structure.salary_components) && viewDialog.employee.salary_structure.salary_components.length > 0 && viewDialog.employee.salary_structure.use_component_based_salary ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Earnings from components */}
+                      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-700">
+                        <h4 className="font-semibold text-green-800 dark:text-green-300 mb-3">Earnings</h4>
+                        <div className="space-y-2">
+                          {viewDialog.employee.salary_structure.salary_components.filter(c => c.component_type === 'earnings' && c.is_active !== false).map((c, idx) => (
+                            <div key={`earn-${idx}`} className="flex justify-between">
+                              <span className="text-sm text-gray-700 dark:text-gray-300">{c.name_in_payslip || c.component_name || 'Earning'}</span>
+                              <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(Number(c.amount) || 0)}</span>
+                            </div>
+                          ))}
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">ESI (Employee)</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.esi_employee || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Professional Tax</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.professional_tax || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">TDS</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.tds || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Loan Deductions</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.loan_deductions || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Others</span>
-                          <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.others || 0)}</span>
+                      </div>
+
+                      {/* Deductions from components */}
+                      <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-700">
+                        <h4 className="font-semibold text-red-800 dark:text-red-300 mb-3">Deductions</h4>
+                        <div className="space-y-2">
+                          {viewDialog.employee.salary_structure.salary_components.filter(c => c.component_type === 'deductions' && c.is_active !== false).map((c, idx) => (
+                            <div key={`ded-${idx}`} className="flex justify-between">
+                              <span className="text-sm text-gray-700 dark:text-gray-300">{c.name_in_payslip || c.component_name || 'Deduction'}</span>
+                              <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(Number(c.amount) || 0)}</span>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Earnings - legacy fields */}
+                      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-700">
+                        <h4 className="font-semibold text-green-800 dark:text-green-300 mb-3">Earnings</h4>
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Basic Salary</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.basic_salary || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">House Rent Allowance</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.house_rent_allowance || viewDialog.employee.salary_structure.hra || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Medical Allowance</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.medical_allowance || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Leave Travel Allowance</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.leave_travel_allowance || viewDialog.employee.salary_structure.travel_allowance || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Bonus</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.conveyance_allowance || viewDialog.employee.salary_structure.food_allowance || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Performance Incentive</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.performance_incentive || viewDialog.employee.salary_structure.internet_allowance || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Other Benefits</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.other_benefits || viewDialog.employee.salary_structure.special_allowance || 0)}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Deductions - legacy fields */}
+                      <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-700">
+                        <h4 className="font-semibold text-red-800 dark:text-red-300 mb-3">Deductions</h4>
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">PF (Employee)</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.pf_employee || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">ESI (Employee)</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.esi_employee || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Professional Tax</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.professional_tax || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">TDS</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.tds || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Loan Deductions</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.loan_deductions || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Others</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-200">{formatCurrency(viewDialog.employee.salary_structure.others || 0)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Net Salary */}
-                  <div className="mt-4 bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg border border-emerald-200 dark:border-emerald-700">
+                  <div className="mt-4 bg-primary/10 dark:bg-primary/20 p-4 rounded-lg border border-primary/30 dark:border-primary/40">
                     <div className="flex justify-between items-center">
-                      <span className="font-semibold text-emerald-800 dark:text-emerald-300">Net Salary</span>
-                      <span className="text-xl font-bold text-emerald-800 dark:text-emerald-300">
+                      <span className="font-semibold text-primary">Net Salary</span>
+                      <span className="text-xl font-bold text-primary">
                         {formatCurrency(
                           calculateGrossSalary(viewDialog.employee.salary_structure) - 
                           calculateTotalDeductions(viewDialog.employee.salary_structure)
@@ -1910,7 +1966,7 @@ const EmployeeList = () => {
                     setViewDialog({ open: false, employee: null });
                     navigate(`/employees/${viewDialog.employee.employee_id}/edit`);
                   }}
-                  className="bg-emerald-600 hover:bg-emerald-700"
+                  className="bg-primary hover:bg-primary/90"
                 >
                   <Edit className="w-4 h-4 mr-2" />
                   Edit Employee
@@ -2063,7 +2119,7 @@ const EmployeeList = () => {
                   {/* Punctuality Bonus */}
                   <div className={`p-4 rounded-lg border ${
                     ratingDialog.rating.details.punctuality_bonus > 0
-                      ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700'
+                      ? 'bg-primary/10 dark:bg-primary/20 border-primary/30 dark:border-primary/40'
                       : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'
                   }`}>
                     <div className="flex items-center justify-between">
@@ -2075,7 +2131,7 @@ const EmployeeList = () => {
                       </div>
                       <div className={`h-12 w-12 rounded-full flex items-center justify-center ${
                         ratingDialog.rating.details.punctuality_bonus > 0
-                          ? 'bg-emerald-100 dark:bg-emerald-800'
+                          ? 'bg-primary/10 dark:bg-primary/20'
                           : 'bg-gray-200 dark:bg-gray-700'
                       }`}>
                         <span className="text-2xl">{ratingDialog.rating.details.punctuality_bonus > 0 ? '🏆' : '⭕'}</span>
@@ -2083,7 +2139,7 @@ const EmployeeList = () => {
                     </div>
                     <p className={`text-xs font-semibold mt-2 ${
                       ratingDialog.rating.details.punctuality_bonus > 0
-                        ? 'text-emerald-600 dark:text-emerald-400'
+                        ? 'text-primary'
                         : 'text-gray-500 dark:text-gray-400'
                     }`}>
                       {ratingDialog.rating.details.punctuality_bonus > 0

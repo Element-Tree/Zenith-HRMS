@@ -52,20 +52,20 @@ const PricingPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Header */}
       <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                 <Shield className="h-6 w-6 text-white" />
               </div>
               <span className="text-xl font-bold text-gray-900 dark:text-white">Elevate Payroll</span>
@@ -97,7 +97,7 @@ const PricingPage = () => {
           <button
             onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly')}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              billingCycle === 'annual' ? 'bg-emerald-600' : 'bg-gray-300'
+              billingCycle === 'annual' ? 'bg-primary' : 'bg-gray-300'
             }`}
           >
             <span
@@ -108,7 +108,7 @@ const PricingPage = () => {
           </button>
           <span className={`text-sm font-medium ${billingCycle === 'annual' ? 'text-gray-900 dark:text-white' : 'text-gray-500'}`}>
             Annual
-            <span className="ml-2 text-emerald-600 font-semibold">Save 17%</span>
+            <span className="ml-2 text-primary font-semibold">Save 17%</span>
           </span>
         </div>
       </div>
@@ -133,20 +133,20 @@ const PricingPage = () => {
                 onClick={() => setSelectedPlanId(plan.plan_id)}
                 className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden transition-all duration-300 cursor-pointer
                   ${isSelected 
-                    ? 'ring-4 ring-emerald-500 scale-105' 
-                    : 'ring-2 ring-gray-200 dark:ring-gray-700 hover:ring-4 hover:ring-emerald-400 hover:scale-105'
+                    ? 'ring-4 ring-primary scale-105' 
+                    : 'ring-2 ring-gray-200 dark:ring-gray-700 hover:ring-4 hover:ring-primary hover:scale-105'
                   }`}
               >
                 {/* Popular Badge */}
                 {isPopular && (
-                  <div className="absolute top-0 right-0 bg-emerald-600 text-white px-3 py-1 text-xs font-semibold rounded-bl-lg z-10">
+                  <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 text-xs font-semibold rounded-bl-lg z-10">
                     MOST POPULAR
                   </div>
                 )}
 
                 {/* Selected Badge */}
                 {isSelected && (
-                  <div className="absolute top-0 left-0 bg-emerald-600 text-white px-3 py-1 text-xs font-semibold rounded-br-lg z-10 flex items-center gap-1">
+                  <div className="absolute top-0 left-0 bg-primary text-primary-foreground px-3 py-1 text-xs font-semibold rounded-br-lg z-10 flex items-center gap-1">
                     <CheckCircle className="h-3 w-3" />
                     SELECTED
                   </div>
@@ -191,7 +191,7 @@ const PricingPage = () => {
                         </div>
                         {billingCycle === 'annual' && annualSavings > 0 && (
                           <div className="mt-2">
-                            <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                            <p className="text-xs font-semibold text-primary">
                               🎉 Pay for 10 months, get 2 FREE!
                             </p>
                             <p className="text-xs text-gray-600 dark:text-gray-400">
@@ -224,7 +224,7 @@ const PricingPage = () => {
                     }}
                     className={`w-full mb-4 text-sm ${
                       isSelected
-                        ? 'bg-emerald-600 hover:bg-emerald-700'
+                        ? 'bg-primary hover:bg-primary/90'
                         : 'bg-gray-900 hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -237,10 +237,9 @@ const PricingPage = () => {
                     <p className="font-semibold text-gray-600 dark:text-gray-400 uppercase mb-2">
                       Key Features
                     </p>
-                    
                     {/* Always show employee limit */}
                     <div className="flex items-start gap-2">
-                      <Check className="h-4 w-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                      <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700 dark:text-gray-300">
                         {features.employee_limit === -1 ? 'Unlimited' : features.employee_limit} employees
                       </span>
@@ -256,7 +255,7 @@ const PricingPage = () => {
                     
                     {/* Support level */}
                     <div className="flex items-start gap-2">
-                      <Check className="h-4 w-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                      <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700 dark:text-gray-300">
                         {features.support_level === 'phone' ? 'Phone Support' : 
                          features.support_level === 'priority_email_chat' ? 'Priority Support' : 
@@ -280,7 +279,7 @@ const PricingPage = () => {
             Already have an account?{' '}
             <a 
               href="/login" 
-              className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-semibold underline"
+              className="text-primary hover:text-primary/80 font-semibold underline"
             >
               Sign in
             </a>
