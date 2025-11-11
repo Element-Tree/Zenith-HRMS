@@ -43,13 +43,16 @@ import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
 import axios from 'axios';
 import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getErrorMessage } from '@/utils/errorHandler';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const EmployeeImport = () => {
-  const { hasFeature, planName } = useSubscription();
+  const { hasFeature, planName, planSlug } = useSubscription();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [importing, setImporting] = useState(false);
   const [importResults, setImportResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
@@ -600,8 +603,13 @@ const EmployeeImport = () => {
                 <TooltipTrigger asChild>
                   <label 
                     htmlFor={canBulkImport ? "file-upload" : undefined} 
+                    onClick={() => {
+                      if (!canBulkImport) {
+                        navigate('/upgrade-required', { state: { from: location.pathname, requiredFeature: 'bulk_employee_import', currentPlan: planName, currentPlanSlug: planSlug } });
+                      }
+                    }}
                     className={`flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg ${
-                      canBulkImport ? 'cursor-pointer bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800' : 'cursor-not-allowed bg-gray-100 dark:bg-gray-900 opacity-60'
+                      canBulkImport ? 'cursor-pointer bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800' : 'cursor-pointer bg-gray-100 dark:bg-gray-900 opacity-60'
                     }`}
                   >
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">

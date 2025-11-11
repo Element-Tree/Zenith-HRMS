@@ -959,7 +959,7 @@ const AddEmployee = () => {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-2xl font-bold text-emerald-600 mb-2">Review Employee Details</h3>
+              <h3 className="text-2xl font-bold text-primary mb-2">Review Employee Details</h3>
               <p className="text-gray-600">Please review all information before submitting</p>
             </div>
             
@@ -1109,22 +1109,22 @@ const AddEmployee = () => {
               return (
                 <div key={step.id} className="flex items-center">
                   <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
-                    isCompleted ? 'bg-emerald-600 border-emerald-600 text-white' :
-                    isActive ? 'border-emerald-600 text-emerald-600' :
+                    isCompleted ? 'bg-primary border-primary text-primary-foreground' :
+                    isActive ? 'border-primary text-primary' :
                     'border-gray-300 text-gray-400'
                   }`}>
                     <Icon className="h-4 w-4" />
                   </div>
                   <div className={`ml-2 hidden sm:block ${
-                    isActive ? 'text-emerald-600 font-medium' :
-                    isCompleted ? 'text-emerald-600' :
+                    isActive ? 'text-primary font-medium' :
+                    isCompleted ? 'text-primary' :
                     'text-gray-400'
                   }`}>
                     {step.title}
                   </div>
                   {index < steps.length - 1 && (
                     <div className={`w-12 h-0.5 mx-4 ${
-                      isCompleted ? 'bg-emerald-600' : 'bg-gray-300'
+                      isCompleted ? 'bg-primary' : 'bg-gray-300'
                     }`} />
                   )}
                 </div>
@@ -1153,7 +1153,7 @@ const AddEmployee = () => {
               {currentStep < steps.length ? (
                 <Button 
                   onClick={nextStep}
-                  className="bg-emerald-600 hover:bg-emerald-700"
+                  className="bg-primary hover:bg-primary/90"
                   data-testid="next-step-btn"
                 >
                   Next Step
@@ -1162,7 +1162,7 @@ const AddEmployee = () => {
                 <Button 
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="bg-emerald-600 hover:bg-emerald-700"
+                  className="bg-primary hover:bg-primary/90"
                   data-testid="submit-employee-btn"
                 >
                   {loading ? "Creating Employee..." : "Create Employee"}

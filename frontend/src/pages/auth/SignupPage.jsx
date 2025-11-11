@@ -320,9 +320,9 @@ const SignupPage = () => {
             </h3>
 
             {/* Plan Summary */}
-            <div className="p-4 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800">
+            <div className="p-4 rounded-lg bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/40">
               <div className="flex items-start justify-between mb-2">
-                <h4 className="font-semibold text-emerald-900 dark:text-emerald-300">
+                <h4 className="font-semibold text-primary">
                   Selected Plan: {plan?.plan_name}
                 </h4>
                 <Button
@@ -330,19 +330,19 @@ const SignupPage = () => {
                   variant="ghost"
                   size="sm"
                   onClick={() => navigate('/pricing')}
-                  className="text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-200"
+                  className="text-primary hover:text-primary/80"
                 >
                   <ArrowLeft className="h-3 w-3 mr-1" />
                   Change Plan
                 </Button>
               </div>
-              <p className="text-2xl font-bold text-emerald-700 dark:text-emerald-400">
+              <p className="text-2xl font-bold text-primary">
                 {formatPrice(billingCycle === 'annual' ? plan?.price_per_user_annual : plan?.price_per_user_monthly)}
-                <span className="text-sm font-normal text-emerald-600 dark:text-emerald-500">
+                <span className="text-sm font-normal text-primary">
                   {billingCycle === 'annual' ? '/year' : '/month'}
                 </span>
               </p>
-              <p className="text-sm text-emerald-700 dark:text-emerald-400 mt-2">
+              <p className="text-sm text-primary mt-2">
                 ✨ 14-day free trial included
               </p>
             </div>
@@ -372,7 +372,7 @@ const SignupPage = () => {
                 id="terms"
                 checked={formData.terms_accepted}
                 onChange={(e) => handleInputChange('terms_accepted', e.target.checked)}
-                className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
               />
               <label htmlFor="terms" className="text-sm text-gray-700 dark:text-gray-300">
                 I agree to the Terms of Service and Privacy Policy
@@ -389,19 +389,19 @@ const SignupPage = () => {
   if (!plan) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Header */}
       <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                 <Shield className="h-6 w-6 text-white" />
               </div>
               <span className="text-xl font-bold text-gray-900 dark:text-white">Elevate Payroll</span>
@@ -428,7 +428,7 @@ const SignupPage = () => {
                   <div
                     className={`w-12 h-12 rounded-full flex items-center justify-center ${
                       isActive
-                        ? 'bg-emerald-600 text-white'
+                        ? 'bg-primary text-primary-foreground'
                         : isCompleted
                         ? 'bg-green-500 text-white'
                         : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
@@ -500,7 +500,7 @@ const SignupPage = () => {
             <Button
               onClick={handleSubmit}
               disabled={loading}
-              className="bg-emerald-600 hover:bg-emerald-700"
+              className="bg-primary hover:bg-primary/90"
             >
               {loading ? (
                 <>

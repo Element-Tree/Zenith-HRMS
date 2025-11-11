@@ -321,7 +321,7 @@ const Dashboard = () => {
       )}
 
       {subscriptionStatus && subscriptionStatus.status === 'active' && (
-        <Card className="border-green-200 dark:border-green-800 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+        <Card className="border-primary/30 dark:border-primary/40 bg-gradient-to-r from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20">
           <CardContent className="pt-4">
             <div className="flex items-center justify-between">
               <div className="flex items-start gap-3">
@@ -395,7 +395,7 @@ const Dashboard = () => {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-4 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-emerald-600">{attendanceOverview.present}</div>
+                <div className="text-2xl font-bold text-primary">{attendanceOverview.present}</div>
                 <div className="text-xs text-gray-500">Present</div>
               </div>
               <div className="text-center">
@@ -634,7 +634,7 @@ const Dashboard = () => {
             <Button
               onClick={() => window.location.href = '/payroll/run'}
               variant="outline"
-              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-primary/30 border-2 border-primary dark:border-primary/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
+              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-primary/10 dark:hover:bg-primary/30 border-2 border-primary dark:border-primary/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
             >
               <DollarSign className="h-5 w-5 text-primary" />
               <span className="font-medium">Run Payroll</span>
@@ -643,7 +643,7 @@ const Dashboard = () => {
             <Button
               onClick={() => window.location.href = '/leave-attendance'}
               variant="outline"
-              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-primary/30 border-2 border-primary dark:border-primary/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
+              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-primary/10 dark:hover:bg-primary/30 border-2 border-primary dark:border-primary/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
             >
               <CheckCircle className="h-5 w-5 text-primary" />
               <span className="font-medium">Approve Leaves</span>
@@ -652,7 +652,7 @@ const Dashboard = () => {
             <Button
               onClick={() => window.location.href = '/leave-attendance'}
               variant="outline"
-              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-primary/30 border-2 border-primary dark:border-primary/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
+              className="w-full h-14 bg-white dark:bg-gray-800 hover:bg-primary/10 dark:hover:bg-primary/30 border-2 border-primary dark:border-primary/50 text-gray-900 dark:text-gray-200 flex items-center justify-start px-4 space-x-3 transition-all duration-200"
             >
               <ClipboardList className="h-5 w-5 text-primary" />
               <span className="font-medium">Manage Attendance</span>

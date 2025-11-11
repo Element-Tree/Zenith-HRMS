@@ -657,12 +657,12 @@ const UserManual = () => {
                         </p>
                       </div>
 
-                      <div className="bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-lg p-4">
+                      <div className="bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/40 rounded-lg p-4">
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-2xl">🏖️</span>
-                          <h4 className="font-semibold text-teal-900 dark:text-teal-200">Who's on Leave</h4>
+                          <h4 className="font-semibold text-primary">Who's on Leave</h4>
                         </div>
-                        <p className="text-sm text-teal-800 dark:text-teal-300">
+                        <p className="text-sm text-primary">
                           Shows colleagues who are currently on approved leave or starting leave soon (next 7 days).
                         </p>
                       </div>
@@ -703,7 +703,7 @@ const UserManual = () => {
             
             {/* Attendance Overview */}
             <section id="attendance-overview" className="scroll-mt-24">
-              <div className="bg-gradient-to-r from-green-600 to-teal-600 rounded-lg p-6 mb-6">
+              <div className="bg-primary rounded-lg p-6 mb-6">
                 <div className="flex items-center space-x-3 text-white">
                   <Calendar className="h-8 w-8" />
                   <div>

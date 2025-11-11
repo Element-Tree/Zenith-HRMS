@@ -560,7 +560,7 @@ const EditEmployee = () => {
               </div>
             </div>
             
-            <div className="flex items-center space-x-2 bg-orange-50 p-4 rounded-lg border border-orange-200">
+            <div className="flex items-center space-x-2 bg-orange-50 dark:bg-orange-300/30 p-4 rounded-lg border border-orange-200">
               <Checkbox
                 id="is_on_probation"
                 checked={formData.is_on_probation || false}

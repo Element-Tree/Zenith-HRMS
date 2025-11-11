@@ -359,6 +359,35 @@ code {
     border-color: rgb(75 85 99) !important;
   }
   
+  /* Select dropdown light mode - Consistent styling */
+  html:not(.dark) select:not([class*="dark:"]),
+  html:not(.dark) [role="combobox"]:not([class*="dark:"]),
+  html:not(.dark) button[role="combobox"]:not([class*="dark:"]) {
+    background-color: #ffffff !important;
+    color: rgb(17 24 39) !important; /* gray-900 */
+    border-color: rgb(209 213 219) !important; /* gray-300 */
+  }
+  html:not(.dark) [role="combobox"]:focus,
+  html:not(.dark) button[role="combobox"]:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.25) !important;
+    border-color: hsl(var(--primary)) !important;
+  }
+
+  /* Input fields light mode - Consistent styling */
+  html:not(.dark) input:not([type="checkbox"]):not([type="radio"]):not([class*="dark:"]),
+  html:not(.dark) textarea:not([class*="dark:"]) {
+    background-color: #ffffff !important;
+    color: rgb(17 24 39) !important; /* gray-900 */
+    border-color: rgb(209 213 219) !important; /* gray-300 */
+  }
+  html:not(.dark) input:focus,
+  html:not(.dark) textarea:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.25) !important;
+    border-color: hsl(var(--primary)) !important;
+  }
+  
   /* Textarea dark mode - AGGRESSIVE */
   .dark textarea,
   textarea.dark\:bg-gray-800 {

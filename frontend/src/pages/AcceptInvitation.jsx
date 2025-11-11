@@ -144,14 +144,14 @@ const AcceptInvitation = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
       <Card className="w-full max-w-lg shadow-2xl">
         <CardHeader className="text-center pb-2">
-          <div className="w-16 h-16 mx-auto bg-emerald-600 dark:bg-emerald-500 rounded-full flex items-center justify-center mb-4">
+          <div className="w-16 h-16 mx-auto bg-primary rounded-full flex items-center justify-center mb-4">
             <Building2 className="h-8 w-8 text-white" />
           </div>
           <CardTitle className="text-2xl">Welcome to Elevate Payroll</CardTitle>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
             You've been invited to be the administrator for
           </p>
-          <p className="text-lg font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
+          <p className="text-lg font-semibold text-primary mt-1">
             {invitation?.company_name}
           </p>
         </CardHeader>
@@ -225,7 +225,7 @@ const AcceptInvitation = () => {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600"
+              className="w-full bg-primary hover:bg-primary/90"
               disabled={submitting}
             >
               {submitting ? (

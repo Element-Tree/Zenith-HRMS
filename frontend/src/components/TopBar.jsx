@@ -338,7 +338,7 @@ const TopBar = () => {
                   onClick={markAllAsRead}
                   disabled={unreadCount === 0}
                 >
-                  <span className="text-sm text-emerald-600">
+                  <span className="text-sm text-primary">
                     {unreadCount > 0 ? 'Mark all as read' : 'All notifications read'}
                   </span>
                 </DropdownMenuItem>
@@ -380,7 +380,7 @@ const TopBar = () => {
               data-testid="user-menu-btn"
             >
               <Avatar className="h-6 w-6">
-                <AvatarFallback className="text-xs bg-emerald-600 text-white">
+                <AvatarFallback className="text-xs bg-primary text-primary-foreground">
                   {user?.role === 'admin' ? 'AD' : (user?.username?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U')}
                 </AvatarFallback>
               </Avatar>

@@ -1157,7 +1157,8 @@ class SalaryComponent(BaseModel):
     # Calculation (not for variable types like Bonus, Commission)
     is_variable: bool = False  # True for Bonus, Commission, etc.
     calculation_type: Optional[str] = None  # flat_amount, percentage_of_ctc, percentage_of_basic
-    amount_value: float = 0
+    # Deprecated: amount_value is no longer set at component definition time
+    amount_value: Optional[float] = None
     
     # Status
     is_active: bool = True
@@ -1196,7 +1197,8 @@ class SalaryComponent(BaseModel):
     
     # Reimbursements specific fields
     unclaimed_handling: Optional[str] = None  # carry_forward, do_not_carry_forward
-    amount_per_month: float = 0
+    # Deprecated: amount_per_month is no longer set at component definition time
+    amount_per_month: Optional[float] = None
     
     # Metadata
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
@@ -1211,7 +1213,8 @@ class SalaryComponentCreate(BaseModel):
     name_in_payslip: str
     is_variable: bool = False
     calculation_type: Optional[str] = None
-    amount_value: float = 0
+    # Deprecated: amount_value is optional
+    amount_value: Optional[float] = None
     is_active: bool = True
     part_of_salary_structure: bool = True
     is_taxable: bool = False
@@ -1231,7 +1234,8 @@ class SalaryComponentCreate(BaseModel):
     include_employer_contribution: bool = False
     is_superannuation_fund: bool = False
     unclaimed_handling: Optional[str] = None
-    amount_per_month: float = 0
+    # Deprecated: amount_per_month is optional
+    amount_per_month: Optional[float] = None
 
 
 class SalaryComponentUpdate(BaseModel):

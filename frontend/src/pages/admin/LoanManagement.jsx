@@ -791,19 +791,19 @@ const LoanManagement = () => {
               </div>
               
               {newLoan.amount && newLoan.interest_rate !== '' && newLoan.tenure_months && (
-                <div className="p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg">
+                <div className="p-4 bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/40 rounded-lg">
                   <div className="flex items-center space-x-2 mb-2">
-                    <Calculator className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                    <span className="font-medium text-emerald-800 dark:text-emerald-400">EMI Calculation</span>
+                    <Calculator className="h-4 w-4 text-primary" />
+                    <span className="font-medium text-primary">EMI Calculation</span>
                   </div>
-                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                  <div className="text-2xl font-bold text-primary">
                     {formatCurrency(calculateEMI(
                       parseFloat(newLoan.amount) || 0,
                       parseFloat(newLoan.interest_rate) || 0,
                       parseInt(newLoan.tenure_months) || 0
                     ))}
                   </div>
-                  <div className="text-sm text-emerald-600 dark:text-emerald-400">Monthly EMI</div>
+                  <div className="text-sm text-primary">Monthly EMI</div>
                 </div>
               )}
             </div>
@@ -867,7 +867,7 @@ const LoanManagement = () => {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Disbursed Amount:</span>
-                      <span className="text-emerald-600 dark:text-emerald-400">{formatCurrency(selectedRequest.disbursed_amount || selectedRequest.amount)}</span>
+                      <span className="text-primary">{formatCurrency(selectedRequest.disbursed_amount || selectedRequest.amount)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Outstanding:</span>

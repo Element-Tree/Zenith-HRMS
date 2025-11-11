@@ -60,15 +60,15 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-white to-primary/10 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4 relative">
       {/* Background Pattern */}
-      <div className="absolute inset-0 bg-grid-emerald-100/25 dark:bg-grid-teal-500/10 bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <div className="absolute inset-0 bg-grid-primary/10 dark:bg-grid-primary/10 bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       
       {/* Animated Background Blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-emerald-200/20 dark:bg-teal-500/10 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-3xl animate-blob"></div>
-        <div className="absolute top-1/3 -right-20 w-96 h-96 bg-emerald-300/20 dark:bg-cyan-500/10 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-20 left-1/3 w-96 h-96 bg-emerald-100/20 dark:bg-blue-500/10 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-3xl animate-blob animation-delay-4000"></div>
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 dark:bg-primary/10 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-3xl animate-blob"></div>
+        <div className="absolute top-1/3 -right-20 w-96 h-96 bg-primary/20 dark:bg-primary/20 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-3xl animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-20 left-1/3 w-96 h-96 bg-primary/10 dark:bg-primary/20 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-3xl animate-blob animation-delay-4000"></div>
       </div>
       
       {/* Theme Toggle Button */}
@@ -91,7 +91,7 @@ const Login = () => {
         <div className="text-center mb-12">
           <div className="mb-8">
             <div className="relative inline-block">
-              <div className="absolute inset-0 bg-emerald-400/20 dark:bg-teal-500/30 blur-2xl rounded-full"></div>
+              <div className="absolute inset-0 bg-primary/20 dark:bg-primary/20 blur-2xl rounded-full"></div>
               <img 
                 src="/elevate-logo.png" 
                 alt="Elevate Logo" 
@@ -101,7 +101,7 @@ const Login = () => {
             <div className="space-y-2">
               <h1 className="text-4xl font-bold text-foreground dark:text-white tracking-tight drop-shadow-lg">Elevate</h1>
               <p className="text-lg text-muted-foreground dark:text-gray-300 font-medium">HR Management System</p>
-              <div className="w-20 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 dark:from-teal-400 dark:to-cyan-500 mx-auto rounded-full shadow-lg"></div>
+              <div className="w-20 h-1 bg-gradient-to-r from-primary to-primary mx-auto rounded-full shadow-lg"></div>
             </div>
           </div>
         </div>
@@ -170,7 +170,7 @@ const Login = () => {
               {/* Submit Button */}
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 dark:from-teal-500 dark:to-cyan-600 dark:hover:from-teal-600 dark:hover:to-cyan-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-200"
                 disabled={loading}
               >
                 {loading ? (
@@ -189,7 +189,7 @@ const Login = () => {
                   Don't have an account?{' '}
                   <a 
                     href="/pricing" 
-                    className="text-emerald-600 dark:text-teal-400 hover:text-emerald-700 dark:hover:text-teal-300 font-semibold"
+                    className="text-primary hover:text-primary/80 font-semibold"
                   >
                     Sign Up
                   </a>

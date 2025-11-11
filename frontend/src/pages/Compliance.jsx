@@ -141,7 +141,7 @@ const Compliance = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'completed': return 'bg-emerald-100 text-emerald-800';
+      case 'completed': return 'bg-primary/10 text-primary';
       case 'pending': return 'bg-yellow-100 text-yellow-800';
       case 'overdue': return 'bg-red-100 text-red-800';
       case 'upcoming': return 'bg-blue-100 text-blue-800';
@@ -240,9 +240,9 @@ const Compliance = () => {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <CheckCircle className="h-8 w-8 text-emerald-600" />
+              <CheckCircle className="h-8 w-8 text-primary" />
               <div>
-                <p className="text-2xl font-bold text-emerald-600">{completedTasks}</p>
+                <p className="text-2xl font-bold text-primary">{completedTasks}</p>
                 <p className="text-xs text-gray-500">Completed</p>
               </div>
             </div>
@@ -480,7 +480,7 @@ const Compliance = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="border-l-4 border-emerald-500 pl-4">
+            <div className="border-l-4 border-primary pl-4">
               <h4 className="font-medium">New PF Rate Notification</h4>
               <p className="text-sm text-gray-600">PF contribution rate remains unchanged at 12% for FY 2024-25</p>
               <p className="text-xs text-gray-500 mt-1">Published: October 1, 2024</p>
